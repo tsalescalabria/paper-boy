@@ -9,7 +9,7 @@ class UploadPhoto
 {
     public static function upload(Request $request): string
     {
-        
+
         if($request->hasFile("file")) {
             dd(Storage::cloud()->put("/rola", $request->file));
         }
