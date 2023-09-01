@@ -4,16 +4,18 @@ namespace App\Http\Controllers\Telegram;
 
 use App\Http\Controllers\Controller;
 use App\Http\Jobs\UploadPhoto;
-use Illuminate\Http\Request;
+use App\Http\Requests\UploadPhotoRequest;
 
 class StoreImageController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(UploadPhotoRequest $request)
     {
-        $fileName = UploadPhoto::upload($request);
 
-        dd(UploadPhoto::getFiles());
+        if($request->hasFile('file')) {
+            app('photo.send')->upload($request->file);
+        }
 
-        return json_encode(["file" => $fileName]);
+
+        return json_encode(["file" => "uploaded"]);
     }
 }
