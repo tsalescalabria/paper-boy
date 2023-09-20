@@ -3,6 +3,7 @@
 namespace App\Http\Jobs;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class UploadPhoto
 {
@@ -10,7 +11,14 @@ class UploadPhoto
     {
         Storage::cloud()->put("/photos", $file);
 
-        return $file->hashName();
+        $model = new \App\Models\File();
+
+        $model->uuid = $hash =  Hash::make('plain-text');
+        $model->name = $file->hashName();
+
+        $model->save();
+
+        return $hash;
     }
 
     public function getFiles(): array

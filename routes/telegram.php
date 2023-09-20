@@ -6,7 +6,3 @@ use Illuminate\Support\Facades\Route;
 Route::name('photo.')->prefix('photo')->group(function () {
     Route::post('/', StoreImageController::class)->name("index");
 });
-
-Route::get("/bolo", function () {
-    return "ola";
-});
