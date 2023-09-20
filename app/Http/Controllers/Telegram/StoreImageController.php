@@ -10,6 +10,6 @@ class StoreImageController extends Controller
 {
     public function __invoke(UploadPhotoRequest $request)
     {
-        return (new uploadPhotoAction())->upload($request->file);
+        return json_encode(["photoId" => (new uploadPhotoAction())->upload($request->file)]);
     }
 }
