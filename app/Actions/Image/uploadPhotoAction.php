@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Telegram;
+namespace App\Actions\Image;
 
 use App\Actions\uploadAction;
 

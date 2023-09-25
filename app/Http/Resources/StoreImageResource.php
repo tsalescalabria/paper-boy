@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Actions\Telegram\uploadPhotoAction;
+use App\Actions\Image\uploadPhotoAction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
