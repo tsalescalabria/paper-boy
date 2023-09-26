@@ -289,7 +289,7 @@ elif [ "$1" == "phpunit" ]; then
     shift 1
 
     if [ "$EXEC" == "yes" ]; then
-        ARGS+=(exec -u sail)
+        ARGS+=(exec -u www-data)
         [ ! -t 0 ] && ARGS+=(-T)
         ARGS+=("$APP_SERVICE" php vendor/bin/phpunit "$@")
     else

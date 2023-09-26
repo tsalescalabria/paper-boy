@@ -76,8 +76,8 @@ ENV PUID ${PUID}
 ARG PGID=1000
 ENV PGID ${PGID}
 
-RUN addgroup -g ${PGID} www-data && \
-  adduser -D -G www-data -u ${PUID} www-data
+RUN addgroup -g ${PGID} sail && \
+  adduser -D -G sail -u ${PUID} sail
 
 #Install BZ2:
 ARG INSTALL_BZ2=false

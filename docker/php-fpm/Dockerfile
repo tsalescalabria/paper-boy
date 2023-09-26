@@ -1,10 +1,8 @@
 # Copied from cyberduck/php-fpm-laravel
 #https://github.com/Cyber-Duck/php-fpm-laravel/blob/8.1/Dockerfile
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
 ENV COMPOSER_MEMORY_LIMIT='-1'
-
-ARG WWWGROUP
 
 RUN apt-get update && \
     apt-get install -y --force-yes --no-install-recommends \
@@ -139,9 +137,9 @@ RUN echo '#!/bin/bash\n/usr/local/bin/php /var/www/artisan config:clear\n/bin/ba
 RUN chmod +x /usr/bin/d
 
 RUN rm -r /var/lib/apt/lists/*
-#RUN useradd -ms /bin/bash www-data
-#RUN addgroup --system --gid 82 www-data && adduser --system --uid 1000 --gid 1000 www-data
+
 RUN usermod -u 1000 www-data
+
 WORKDIR /var/www/laravel/current
 
 COPY ./docker-entrypoint.sh /usr/local/bin/
