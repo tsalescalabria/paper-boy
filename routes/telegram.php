@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\Telegram\StoreImageController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('.telegram')->name('telegram')->group(function () {
-    Route::post('/', fn (Request $request) => $request->all());
+Route::name('photo.')->prefix('photo')->group(function () {
+    Route::post('/', StoreImageController::class)->name("index");
 });

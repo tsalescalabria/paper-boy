@@ -1,32 +1,13 @@
 services:
-    laravel.test:
+    php-fpm:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.2
-            dockerfile: Dockerfile
-            args:
-                WWWGROUP: '${WWWGROUP}'
-        image: sail-8.2/app
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
-        ports:
-            - '${APP_PORT:-80}:80'
-            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
-        environment:
-            WWWUSER: '${WWWUSER}'
-            LARAVEL_SAIL: 1
-            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
-            IGNITION_LOCAL_SITES_PATH: '${PWD}'
+            context: "./docker/php-fpm"
         volumes:
-            - '.:/var/www/html'
+            - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
         networks:
             - sail
-        depends_on:
-            - mysql
-            - redis
-            - meilisearch
-            - mailpit
-            - selenium
+        expose:
+            - "9000"
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -101,7 +82,55 @@ services:
         networks:
             - sail
     minio:
-        image: minio/minio
+        image: 'minio/minio:latest'
+        ports:
+            - '${FORWARD_MINIO_PORT:-9000}:9000'
+            - '${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900'
+        environment:
+            MINIO_ROOT_USER: 'sail'
+            MINIO_ROOT_PASSWORD: 'password'
+            MINIO_STORAGE_USE_HTTPS: 'false'
+        volumes:
+            - 'sail-minio:/data/minio'
+        networks:
+            - sail
+        command: 'minio server /data/minio --console-address ":8900"'
+        healthcheck:
+            test:
+                - CMD
+                - curl
+                - '-f'
+                - 'http://localhost:9000/minio/health/live'
+            retries: 3
+            timeout: 5s
+    nginx:
+        build:
+            context: "./docker/nginx"
+        depends_on:
+            - php-fpm
+        volumes:
+            - ${NGINX_SSL_PATH}:/etc/nginx/ssl
+            - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+            - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
+            - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
+        ports:
+            - "${NGINX_HOST_HTTPS_PORT}:443"
+            - "${NGINX_HOST_HTTP_PORT}:80"
+        networks:
+            - sail
+
+    laravel-horizon:
+        build:
+            context: ./docker/laravel-horizon
+        volumes:
+            - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+            - ./docker/laravel-horizon/supervisord.d:/etc/supervisord.d
+        depends_on:
+            - php-fpm
+        extra_hosts:
+            - "dockerhost:${DOCKER_HOST_IP}"
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
@@ -111,4 +140,6 @@ volumes:
     sail-redis:
         driver: local
     sail-meilisearch:
+        driver: local
+    sail-minio:
         driver: local
