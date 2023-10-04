@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 
 class GenerateHash extends Command
 {
@@ -27,10 +29,13 @@ class GenerateHash extends Command
     public function handle()
     {
         $hash = Str::random(150);
-        return $hash;
-        // create redis
-        // save hash on redis with 30 min expiration time
-        // save in the database for auth use
-        // return the hash
+        Cache::put('hash', $hash, now()->addMinutes(30));
+
+        $this->info(Cache::get('hash'));
+
+        // tentei fazer com o redis mas ele n retorna a hash na rota, apenas null
+        // Redis::set('hash', $hash, 'EX', 1800); // 1800 seconds (30 minutes)
+        // dump(Redis::get('hash'));
+        // die();
     }
 }
