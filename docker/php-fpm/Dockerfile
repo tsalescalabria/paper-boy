@@ -1,5 +1,3 @@
-# Copied from cyberduck/php-fpm-laravel
-#https://github.com/Cyber-Duck/php-fpm-laravel/blob/8.1/Dockerfile
 FROM php:8.2-fpm
 
 ENV COMPOSER_MEMORY_LIMIT='-1'
@@ -105,6 +103,15 @@ RUN . ~/.bashrc
 
 RUN echo "* * * * * www-data /usr/local/bin/php /var/www/artisan schedule:run >> /dev/null 2>&1"  >> /etc/cron.d/laravel-scheduler
 RUN chmod 0644 /etc/cron.d/laravel-scheduler
+
+#####################################
+# Laravel xdebug driver:
+####################################
+
+RUN docker-php-ext-enable xdebug
+
+RUN echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini 
+RUN echo "xdebug.remote_host = host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini 
 
 #
 #--------------------------------------------------------------------------
