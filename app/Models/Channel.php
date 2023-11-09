@@ -14,7 +14,8 @@ class Channel extends Model
         return $this->hasMany(Bot::class);
     }
 
-    public function groups(){
+    public function groups()
+    {
         return $this->hasMany(Group::class);
     }
 }

@@ -18,8 +18,8 @@ class ChannelSeeder extends Seeder
                 "name" => "Telegram",
             ],
             [
-                "id"=> 2,
-                "name"=> "Discord",
+                "id" => 2,
+                "name" => "Discord",
             ],
         ]);
     }

@@ -9,6 +9,8 @@ class Group extends Model
 {
     use HasFactory;
 
+    protected $table = "grupos";
+
     public function channels()
     {
         return $this->belongsTo(Channel::class);

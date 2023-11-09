@@ -9,5 +9,5 @@ class Messages extends Model
 {
     use HasFactory;
 
-    const CREATED_AT = 'sended_at';
+    public const CREATED_AT = 'sended_at';
 }

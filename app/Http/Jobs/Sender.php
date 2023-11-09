@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 
 abstract class Sender
 {
-    abstract public function sendMessage(String $id, String $text): bool;
+    abstract public function sendMessage(String $botToken, String $chat_id, String $text): bool;
 
     /**
      * Summary of http

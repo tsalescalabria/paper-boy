@@ -14,10 +14,10 @@ class BotsSeeder extends Seeder
     {
         DB::table("bots")->insert([
             [
-                "token"=> env("TELEGRAM_BOT_TOKEN"),
-                "channel_id"=> 1,
+                "token" => env("TELEGRAM_BOT_TOKEN"),
+                "channel_id" => 1,
                 "created_at" => date("Y-m-d H:i:s"),
-                "updated_at"=> date("Y-m-d H:i:s"),
+                "updated_at" => date("Y-m-d H:i:s"),
             ]
         ]);
     }

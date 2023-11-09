@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(ChannelSeeder::class);
         $this->call(BotsSeeder::class);
+        $this->call(GroupSeeder::class);
     }
 }
