@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Jobs;
+namespace App\Trait;
 
 use App\Models\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 
-class UploadPhoto
+trait UploadMedia
 {
     public function upload(Object $file): string
     {
@@ -20,10 +20,5 @@ class UploadPhoto
         $model->save();
 
         return $hash;
-    }
-
-    public function getFiles(): array
-    {
-        return Storage::cloud()->allFiles('photos');
     }
 }

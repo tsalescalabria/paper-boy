@@ -15,4 +15,9 @@ class Group extends Model
     {
         return $this->belongsTo(Channel::class);
     }
+
+    public function checkIfMessageGotSended()
+    {
+        
+    }
 }

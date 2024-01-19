@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Jobs;
+namespace App\Services;
 
 use Http;
 use Illuminate\Support\Collection;

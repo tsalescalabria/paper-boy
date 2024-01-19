@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use App\Http\Jobs\UploadPhoto;
+use App\Services\UploadPhoto;
 use Illuminate\Support\ServiceProvider;
+use App\Services\Messages;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind("photo.send", UploadPhoto::class);
+        $this->app->bind("message.check", Messages::class);
     }
 
     /**
